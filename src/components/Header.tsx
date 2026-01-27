@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
+// ✅ CORRECT asset import
+import logo from "@/assets/ri.png";
+
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "About Us", href: "#about" },
@@ -20,11 +23,9 @@ const Header = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        // scrolling down
         setIsVisible(false);
         setIsMenuOpen(false);
       } else {
-        // scrolling up
         setIsVisible(true);
       }
 
@@ -47,14 +48,11 @@ const Header = () => {
       <div className="container mx-auto px-5 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
 
-          {/* LOGO + TITLE — SINGLE LINE */}
-          <a
-            href="#home"
-            className="flex items-center gap-2 whitespace-nowrap"
-          >
+          {/* LOGO + TITLE */}
+          <a href="#home" className="flex items-center gap-2 whitespace-nowrap">
             <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center overflow-hidden">
               <img
-                src="/src/assets/ri.png"
+                src={logo}
                 alt="Raghbir Interiors Logo"
                 className="w-full h-full object-contain"
               />
@@ -88,15 +86,11 @@ const Header = () => {
 
           {/* MOBILE MENU BUTTON */}
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => setIsMenuOpen((v) => !v)}
             className="lg:hidden text-header-foreground hover:text-gold transition-colors"
             aria-label="Toggle Menu"
           >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
