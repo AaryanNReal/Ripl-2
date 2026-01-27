@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionChampagneGlow from "@/components/bg_glow";
 import {
@@ -38,10 +38,34 @@ export interface CategoryPageProps {
   projects: Project[];
 }
 
+/* ================= SCROLL HOOK ================= */
+
+function useInView<T extends HTMLElement>(threshold = 0.25) {
+  const ref = useRef<T | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
 /* ================= COMPONENT ================= */
 
 const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   const navigate = useNavigate();
+
+  /* FORCE PAGE TO TOP */
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
 
   const [selected, setSelected] = useState<{
     project: Project;
@@ -56,28 +80,32 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
     }
   }, [modalApi, selected]);
 
+  const header = useInView<HTMLDivElement>(0.4);
+
   return (
     <section className="relative py-28 overflow-hidden bg-gradient-to-b from-[#f2f2f2] via-white to-[#ededed]">
-      {/* BACKGROUND GLOW */}
       <SectionChampagneGlow />
 
-      {/* CONTENT */}
       <div className="relative z-10">
-        {/* HEADER */}
-        <div className="container mx-auto px-6 lg:px-12 text-center mb-20">
-          {/* BACK BUTTON */}
+        {/* ================= HEADER ================= */}
+        <div
+          ref={header.ref}
+          className={`
+            container mx-auto px-6 lg:px-12 text-center mb-20
+            transition-all duration-700 ease-out
+            ${header.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
+          `}
+        >
           <div className="flex justify-start mb-6">
             <button
               onClick={() => navigate(-1)}
               className="
                 inline-flex items-center gap-2
-                px-4 py-2
-                rounded-full
+                px-4 py-2 rounded-full
                 border border-gold/30
                 bg-white/70 backdrop-blur-md
                 text-charcoal text-sm font-medium
-                hover:bg-white
-                transition
+                hover:bg-white transition
               "
             >
               <ArrowLeft className="w-4 h-4 text-gold" />
@@ -93,12 +121,13 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
           </p>
         </div>
 
-        {/* PROJECTS */}
-        <div className="container mx-auto px-6 lg:px-12 space-y-12">
-          {projects.map((project) => (
-            <ProjectBlock
+        {/* ================= PROJECTS ================= */}
+        <div className="container mx-auto px-6 lg:px-12 space-y-20">
+          {projects.map((project, i) => (
+            <AnimatedProject
               key={project.id}
               project={project}
+              index={i}
               onImageClick={(imageIndex) =>
                 setSelected({ project, imageIndex })
               }
@@ -112,7 +141,6 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
         <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] bg-charcoal border border-white/10 p-0 overflow-hidden">
           {selected && (
             <>
-              {/* CLOSE */}
               <button
                 onClick={() => setSelected(null)}
                 className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/70 border border-white/20 flex items-center justify-center"
@@ -121,7 +149,6 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
               </button>
 
               <div className="flex flex-col lg:grid lg:grid-cols-2 max-h-[95vh]">
-                {/* SLIDER */}
                 <div className="relative bg-black">
                   <Carousel setApi={setModalApi} opts={{ loop: true }}>
                     <CarouselContent>
@@ -140,7 +167,6 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
                   <ArrowBtnRight onClick={() => modalApi?.scrollNext()} />
                 </div>
 
-                {/* INFO */}
                 <div className="p-6 lg:p-10 text-white overflow-y-auto">
                   <h2 className="text-3xl font-bold mb-4">
                     {selected.project.title}
@@ -165,6 +191,33 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   );
 };
 
+/* ================= ANIMATED PROJECT ================= */
+
+const AnimatedProject = ({
+  project,
+  index,
+  onImageClick,
+}: {
+  project: Project;
+  index: number;
+  onImageClick: (index: number) => void;
+}) => {
+  const { ref, visible } = useInView<HTMLDivElement>(0.25);
+
+  return (
+    <div
+      ref={ref}
+      className={`
+        transition-all duration-700 ease-out
+        ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
+      `}
+      style={{ transitionDelay: `${index * 120}ms` }}
+    >
+      <ProjectBlock project={project} onImageClick={onImageClick} />
+    </div>
+  );
+};
+
 /* ================= PROJECT BLOCK ================= */
 
 const ProjectBlock = ({
@@ -178,7 +231,6 @@ const ProjectBlock = ({
 
   return (
     <div className="grid lg:grid-cols-2 gap-12 items-center">
-      {/* CAROUSEL */}
       <div className="relative">
         <Carousel setApi={setApi} opts={{ loop: true }}>
           <CarouselContent>
@@ -193,7 +245,6 @@ const ProjectBlock = ({
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
 
-                  {/* MOBILE OVERLAY INFO */}
                   <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                   <div className="lg:hidden absolute bottom-0 p-5 text-white">
                     <h3 className="text-xl font-bold mb-1">
@@ -214,7 +265,6 @@ const ProjectBlock = ({
         <ArrowBtnRight onClick={() => api?.scrollNext()} />
       </div>
 
-      {/* DESKTOP TEXT */}
       <div className="hidden lg:block">
         <h3 className="text-3xl font-bold text-charcoal mb-4">
           {project.title}
