@@ -5,20 +5,19 @@ import SectionGoldBackground from "@/components/bg";
 /* -------------------- DATA -------------------- */
 
 const stats = [
-  { icon: Clock, value: "50+", label: "Years Experience" },
-  { icon: Building, value: "500+", label: "Projects Completed" },
-  { icon: Users, value: "100+", label: "Team Members" },
-  { icon: Award, value: "16+", label: "States Covered" },
+  { icon: Clock, value: "50+", label: "Years of Experience" },
+  { icon: Building, value: "500+", label: "Projects Delivered" },
+  { icon: Users, value: "100+", label: "Skilled Professionals" },
+  { icon: Award, value: "16+", label: "States & Regions" },
 ];
 
-/* -------------------- MOBILE SCROLL POP HOOK -------------------- */
+/* -------------------- MOBILE SCROLL HOOK -------------------- */
 
 function useMobilePopIn<T extends HTMLElement>(threshold = 0.3) {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Desktop: no scroll animation
     if (window.innerWidth >= 1024) {
       setVisible(true);
       return;
@@ -27,9 +26,7 @@ function useMobilePopIn<T extends HTMLElement>(threshold = 0.3) {
     if (!ref.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setVisible(entry.isIntersecting);
-      },
+      ([entry]) => setVisible(entry.isIntersecting),
       { threshold }
     );
 
@@ -46,33 +43,66 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative overflow-hidden py-20 lg:py-32 bg-cream"
+      className="relative overflow-hidden py-24 lg:py-36 bg-cream"
     >
-      {/* Gold ambient background */}
       <SectionGoldBackground />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        {/* ---------- SECTION HEADER ---------- */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <p className="text-gold uppercase tracking-[0.35em] text-xs font-medium mb-4">
-            Introducing
+        {/* ---------- HEADER ---------- */}
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <p className="text-gold uppercase tracking-[0.35em] text-xs font-medium mb-5">
+            About Us
           </p>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-foreground mb-6 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-foreground mb-8 leading-tight">
             Building Dreams Into Reality
           </h2>
 
-          <div className="w-24 h-1.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-8" />
+          <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-10" />
+        </div>
 
-          <p className="text-black leading-relaxed text-lg">
-            RIPL Interiors is a multi-disciplinary contracting company delivering
-            turnkey interior solutions through decades of expertise, in-house
-            manufacturing, and skilled craftsmanship across India.
+        {/* ---------- CONTENT ---------- */}
+        <div className="max-w-5xl mx-auto space-y-8 text-black/80 text-[17px] leading-relaxed">
+          <p>
+            <strong>Raghbir Interiors Private Limited (RIPL)</strong> is a
+            45-year-old organization built on experience, integrity, and a
+            commitment to delivering quality work on time. Headquartered in
+            Mumbai, India, with a strong presence in Bangkok, Thailand, RIPL is
+            recognized as one of the leading interior contracting firms in the
+            region.
+          </p>
+
+          <p>
+            The driving force behind RIPL has been its Founder Chairman,
+            <strong> Mr. Raghbir Singh</strong>, whose experience and vision laid
+            the foundation of the company. Under the leadership of
+            <strong> Mr. Balvinder Singh (Managing Director)</strong> and
+            <strong> Mr. Narendra Singh (Director)</strong>, RIPL has
+            successfully executed numerous prestigious projects across India
+            and internationally.
+          </p>
+
+          <p>
+            With operations in Thailand led by
+            <strong> Mr. Tushar Urumkar (Director – Projects)</strong>, the
+            company continues to expand its international footprint. RIPL’s
+            expertise spans corporate offices for multinational companies,
+            global software centers, luxury hotels, resorts, premium retail
+            brands, residential developments, and mixed-use projects.
+          </p>
+
+          <p>
+            RIPL’s strength lies in its{" "}
+            <strong>customer-need–based approach</strong>, realistic project
+            planning, and strict adherence to timelines. Backed by strong
+            infrastructure, skilled manpower, and an in-house factory at
+            Kandivali (Mumbai), the company consistently delivers quality and
+            precision, even under demanding conditions.
           </p>
         </div>
 
-        {/* ---------- KEY INFO GRID ---------- */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch">
+        {/* ---------- STATS ---------- */}
+        <div className="mt-24 grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {stats.map((stat, index) => {
             const { ref, visible } = useMobilePopIn<HTMLDivElement>();
 
@@ -81,31 +111,27 @@ const AboutSection = () => {
                 key={index}
                 ref={ref}
                 className={`
-                  group relative h-full rounded-2xl
-                  bg-background/90 backdrop-blur-sm
+                  relative rounded-2xl p-8 text-center
+                  bg-white/80 backdrop-blur-sm
                   border border-black/5
-                  p-8 text-center
 
-                  transition-all duration-700
-                  ease-[cubic-bezier(0.16,1,0.3,1)]
-
+                  transition-all duration-700 ease-out
                   ${
                     visible
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 translate-y-8 scale-[0.92]"
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-6"
                   }
 
-                  lg:opacity-100 lg:translate-y-0 lg:scale-100
-                  hover:shadow-xl
+                  lg:opacity-100 lg:translate-y-0
                 `}
               >
-                <stat.icon className="w-10 h-10 text-gold mx-auto mb-5 transition-transform duration-300 group-hover:scale-110" />
+                <stat.icon className="w-9 h-9 text-gold mx-auto mb-4" />
 
-                <div className="text-4xl md:text-5xl font-serif text-foreground mb-2">
+                <div className="text-4xl font-serif text-foreground mb-1">
                   {stat.value}
                 </div>
 
-                <div className="text-muted-foreground text-sm uppercase tracking-wider">
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">
                   {stat.label}
                 </div>
               </div>

@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionChampagneGlow from "@/components/bg_glow";
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselApi,
 } from "@/components/ui/carousel";
+
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+
 import {
   MapPin,
   Clock,
@@ -28,7 +31,6 @@ export interface Project {
   title: string;
   images: string[];
   description: string;
-
   client: string;
   location: string;
   architect: string;
@@ -44,7 +46,7 @@ export interface CategoryPageProps {
   projects: Project[];
 }
 
-/* ================= SCROLL HOOK ================= */
+/* ================= IN VIEW HOOK ================= */
 
 function useInView<T extends HTMLElement>(threshold = 0.25) {
   const ref = useRef<T | null>(null);
@@ -65,7 +67,7 @@ function useInView<T extends HTMLElement>(threshold = 0.25) {
   return { ref, visible };
 }
 
-/* ================= COMPONENT ================= */
+/* ================= MAIN PAGE ================= */
 
 const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   const navigate = useNavigate();
@@ -73,6 +75,14 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
+
+  const projectsWithImages = projects.filter(
+    (p) => p.images && p.images.length > 0
+  );
+
+  const projectsWithoutImages = projects.filter(
+    (p) => !p.images || p.images.length === 0
+  );
 
   const [selected, setSelected] = useState<{
     project: Project;
@@ -90,7 +100,7 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   const header = useInView<HTMLDivElement>(0.4);
 
   return (
-    <section className="relative py-28 overflow-hidden bg-gradient-to-b from-[#f2f2f2] via-white to-[#ededed]">
+    <section className="relative py-10 overflow-hidden bg-gradient-to-b from-[#f2f2f2] via-white to-[#ededed]">
       <SectionChampagneGlow />
 
       <div className="relative z-10">
@@ -123,27 +133,31 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
           <h1 className="text-5xl md:text-6xl font-bold text-charcoal mb-4">
             {title}
           </h1>
+
           <p className="text-gold uppercase tracking-[0.3em] text-sm">
             {tagline}
           </p>
         </div>
 
-        {/* ================= PROJECTS ================= */}
-        <div className="container mx-auto px-6 lg:px-12 space-y-10">
-          {projects.map((project, i) => (
+        {/* ================= PROJECTS WITH IMAGES ================= */}
+        <div className="container mx-auto px-6 lg:px-12 space-y-16">
+          {projectsWithImages.map((project, index) => (
             <AnimatedProject
               key={project.id}
               project={project}
-              index={i}
+              index={index}
               onImageClick={(imageIndex) =>
                 setSelected({ project, imageIndex })
               }
             />
           ))}
+
+          {/* ================= TABLE PROJECTS ================= */}
+          <NoImageProjectsTable projects={projectsWithoutImages} />
         </div>
       </div>
 
-      {/* ================= MODAL ================= */}
+      {/* ================= IMAGE MODAL ================= */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
         <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] bg-charcoal border border-white/10 p-0 overflow-hidden">
           {selected && (
@@ -259,10 +273,9 @@ const ProjectBlock = ({
                   />
 
                   <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+
                   <div className="lg:hidden absolute bottom-0 p-5 text-white">
-                    <h3 className="text-xl font-bold mb-1">
-                      {project.title}
-                    </h3>
+                    <h3 className="text-xl font-bold mb-1">{project.title}</h3>
                     <p className="text-sm opacity-80">{project.location}</p>
                   </div>
                 </div>
@@ -280,9 +293,7 @@ const ProjectBlock = ({
           {project.title}
         </h3>
 
-        <p className="text-charcoal/60 mb-6">
-          {project.description}
-        </p>
+        <p className="text-charcoal/60 mb-6">{project.description}</p>
 
         <div className="space-y-2 text-sm text-charcoal/70">
           <p><strong>Client:</strong> {project.client}</p>
@@ -294,6 +305,154 @@ const ProjectBlock = ({
     </div>
   );
 };
+
+/* ================= TABLE SECTION ================= */
+const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  if (projects.length === 0) return null;
+
+  const filteredProjects = projects.filter((p) => {
+    const q = query.toLowerCase();
+    return (
+      p.title.toLowerCase().includes(q) ||
+      p.client.toLowerCase().includes(q) ||
+      p.location.toLowerCase().includes(q)
+    );
+  });
+
+  return (
+    <div className="pt-20">
+      {/* HEADER */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="
+          w-full flex items-center justify-between
+          px-6 py-5 rounded-2xl
+          bg-white/70 backdrop-blur-md
+          border border-black/10
+          text-charcoal font-semibold text-lg
+          hover:bg-white transition
+        "
+      >
+        <span>All Completed Projects</span>
+        <ChevronRight
+          className={`w-5 h-5 transition-transform ${
+            open ? "rotate-90" : ""
+          }`}
+        />
+      </button>
+
+      {/* CONTENT */}
+      {open && (
+        <div className="mt-6 rounded-2xl bg-white/80 backdrop-blur-md border border-black/10">
+          {/* SEARCH (non-scrolling) */}
+          <div className="p-4 border-b border-black/10">
+            <input
+              type="text"
+              placeholder="Search project, client or location…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="
+                w-full px-4 py-3 rounded-xl
+                border border-black/10
+                bg-white
+                text-sm
+                focus:outline-none focus:ring-2 focus:ring-gold/40
+              "
+            />
+          </div>
+
+          {/* ================= MOBILE SCROLL CONTAINER ================= */}
+          <div
+            className="
+              lg:hidden
+              max-h-[65vh]
+              overflow-y-auto
+              overscroll-contain
+              touch-pan-y
+              p-4
+              space-y-4
+            "
+          >
+            {filteredProjects.length === 0 && (
+              <p className="text-center text-charcoal/50 py-6">
+                No matching projects found
+              </p>
+            )}
+
+            {filteredProjects.map((p) => (
+              <div
+                key={p.id}
+                className="rounded-xl border border-black/10 bg-white p-4"
+              >
+                <h4 className="font-semibold text-charcoal mb-2">
+                  {p.title}
+                </h4>
+
+                <div className="text-sm text-charcoal/70 space-y-1">
+                  <p><strong>Client:</strong> {p.client}</p>
+                  <p><strong>Location:</strong> {p.location}</p>
+                  <p><strong>Architect:</strong> {p.architect}</p>
+                  <p><strong>Area:</strong> {p.area}</p>
+                  <p><strong>Duration:</strong> {p.duration}</p>
+                  <p><strong>Value:</strong> {p.value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ================= DESKTOP TABLE ================= */}
+          <div className="hidden lg:block max-h-[60vh] overflow-y-auto">
+            <table className="w-full text-sm">
+              <thead className="sticky top-0 bg-white z-10 border-b border-black/10">
+                <tr>
+                  {[
+                    "Project",
+                    "Client",
+                    "Location",
+                    "Architect",
+                    "Area",
+                    "Duration",
+                    "Value",
+                  ].map((h) => (
+                    <th
+                      key={h}
+                      className="px-5 py-4 text-left font-medium text-charcoal/70"
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {filteredProjects.map((p) => (
+                  <tr
+                    key={p.id}
+                    className="border-t border-black/5 hover:bg-black/5 transition"
+                  >
+                    <td className="px-5 py-4 font-semibold">{p.title}</td>
+                    <td className="px-5 py-4">{p.client}</td>
+                    <td className="px-5 py-4">{p.location}</td>
+                    <td className="px-5 py-4">{p.architect}</td>
+                    <td className="px-5 py-4">{p.area}</td>
+                    <td className="px-5 py-4">{p.duration}</td>
+                    <td className="px-5 py-4">{p.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+
 
 /* ================= HELPERS ================= */
 

@@ -1,26 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import corporateImg from "@/assets/project-commercial.jpg";
-import bankingImg from "@/assets/hero-banking.jpg"
-import hospitalityImg from "@/assets/hero-hospitality.jpg"
-import retailImg from "@/assets/project-retail.jpg"
+import retailImg from "@/assets/project-retail.jpg";
+import hospitalityImg from "@/assets/hero-hospitality.jpg";
+
 import SectionGoldBackground from "./bg";
+
 import {
   Building2,
-  Landmark,
   Store,
   Hotel,
   ArrowUpRight,
 } from "lucide-react";
 
-/* ==================== IMAGES ==================== */
-
-
 /* ==================== TYPES ==================== */
 
 interface CategoryData {
-  id: string;
-  name: string;
+  id: string;            // route id (DO NOT CHANGE)
+  name: string;          // UI name
   tagline: string;
   icon: typeof Building2;
   image: string;
@@ -30,29 +28,22 @@ interface CategoryData {
 
 const categories: CategoryData[] = [
   {
-  id: "corporate",
-  name: "Corporate",
-  tagline: "Inspiring Workspaces",
-  icon: Building2,
-  image: corporateImg,
-},
-  {
-    id: "banking",
-    name: "Banking & Finance",
-    tagline: "Trust & Elegance",
-    icon: Landmark,
-    image: bankingImg,
+    id: "corporate",
+    name: "Corporate",
+    tagline: "Inspiring Workspaces",
+    icon: Building2,
+    image: corporateImg,
   },
   {
-    id: "retail",
-    name: "Retail",
+    id: "retail", // route remains /projects/retail
+    name: "Boutiques",
     tagline: "Captivating Experiences",
     icon: Store,
     image: retailImg,
   },
   {
-    id: "hospitality",
-    name: "Hospitality",
+    id: "hospitality", // route remains /projects/hospitality
+    name: "Hotels & Resorts",
     tagline: "Unforgettable Stays",
     icon: Hotel,
     image: hospitalityImg,
@@ -69,10 +60,12 @@ function useInView<T extends HTMLElement>(
 
   useEffect(() => {
     if (!ref.current) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
       options
     );
+
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [options]);
@@ -88,7 +81,7 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
 
   return (
     <div
-      onClick={() => navigate(`/projects/${category.id}`)}
+      onClick={() => navigate(`/${category.id}`)}
       className="
         group relative cursor-pointer
         h-[340px]
@@ -126,6 +119,7 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
           <h3 className="text-3xl font-bold text-white mb-2">
             {category.name}
           </h3>
+
           <p className="text-sm uppercase tracking-[0.3em] text-gold mb-6">
             {category.tagline}
           </p>
@@ -134,6 +128,7 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
             <span className="text-white/70 text-sm">
               View projects
             </span>
+
             <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
               <ArrowUpRight className="w-5 h-5 text-white" />
             </div>
@@ -171,25 +166,35 @@ const ProjectsSection = () => {
       id="projects"
       className="py-28 relative overflow-hidden bg-gradient-to-b from-[#f2f2f2] via-white to-[#ededed]"
     >
-      <SectionGoldBackground/>
+      <SectionGoldBackground />
 
       {/* HEADING */}
       <div className="container mx-auto px-6 lg:px-12 text-center mb-20 relative z-10">
         <span className="inline-flex items-center px-5 py-2 rounded-full border border-gold/40 bg-gold/10 text-gold text-xs uppercase tracking-widest mb-8">
           Our Portfolio
         </span>
+
         <h2 className="text-5xl md:text-6xl font-bold text-charcoal mb-6">
           Our Expertise
         </h2>
+
         <p className="text-charcoal/60 max-w-2xl mx-auto">
           Industry-focused interior solutions crafted with precision and elegance
         </p>
       </div>
 
-      {/* GRID */}
-      <div className="container mx-auto px-6 lg:px-12 grid gap-8 lg:grid-cols-2 relative z-10">
-        {categories.map((cat) => (
-          <AnimatedCategory key={cat.id} category={cat} />
+      {/* GRID (FIXED) */}
+      <div
+        className="
+          container mx-auto px-6 lg:px-12
+          grid gap-8
+          sm:grid-cols-2
+          lg:grid-cols-3
+          relative z-10
+        "
+      >
+        {categories.map((category) => (
+          <AnimatedCategory key={category.id} category={category} />
         ))}
       </div>
     </section>

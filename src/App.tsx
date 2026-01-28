@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 
 // 👉 category pages
 import Retail from "./pages/Retail";
-import Banking from "./pages/Banking";
+
 import Corporate from "./pages/Corporate";
 import Hospitality from "./pages/Hospitality";
 const queryClient = new QueryClient();
@@ -25,10 +25,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
 
           {/* CATEGORY PAGES */}
-          <Route path="/projects/retail" element={<Retail />} />
-          <Route path="/projects/banking" element={<Banking />} />
-          <Route path="/projects/corporate" element={<Corporate />} />
-          <Route path="/projects/hospitality" element={<Hospitality />} />
+          <Route path="/retail" element={<Retail />} />
+          
+          <Route path="/corporate" element={<Corporate />} />
+          <Route path="/hospitality" element={<Hospitality />} />
 
           {/* 404 — ALWAYS LAST */}
           <Route path="*" element={<NotFound />} />
