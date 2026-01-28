@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-
+import SectionChampagneEdgeGlowStrong from "./bg_glow";
 // ✅ CORRECT asset import
 import logo from "@/assets/ri.png";
 
@@ -38,13 +38,17 @@ const Header = () => {
 
   return (
     <header
-      className={`
-        fixed top-0 left-0 right-0 z-50
-        bg-charcoal
-        transition-transform duration-300 ease-in-out
-        ${isVisible ? "translate-y-0" : "-translate-y-full"}
-      `}
-    >
+  className={`
+    fixed top-0 left-0 right-0 z-50
+    bg-gradient-to-b from-charcoal/95 via-charcoal/90 to-charcoal/85
+    backdrop-blur-md
+    border-b border-white/5
+    transition-transform duration-300 ease-in-out
+    ${isVisible ? "translate-y-0" : "-translate-y-full"}
+  `}
+>
+
+      
       <div className="container mx-auto px-5 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
 

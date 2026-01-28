@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import AboutPage from "./pages/about";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +23,7 @@ const App = () => (
         <Routes>
           {/* HOME */}
           <Route path="/" element={<Index />} />
+          <Route path="/about" element={<AboutPage />} />
 
           {/* CATEGORY PAGES */}
           <Route path="/retail" element={<Retail />} />

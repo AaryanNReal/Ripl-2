@@ -5,28 +5,56 @@ import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import FactoriesSection from "@/components/FactoriesSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import TeamSection from "@/components/team";
 
+import PageReveal from "@/components/PageReveal";
+import Reveal from "@/components/Reveal";
+
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <HeroCarousel />
-        <AnniversarySection />
-        <AboutSection />
-        <ServicesSection />
-        <ProjectsSection />
-        <FactoriesSection />
-        <TeamSection/>
-        
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
+    <PageReveal>
+      {/* IMPORTANT: no min-h-screen */}
+      <div className="bg-neutral-950 text-white overflow-x-hidden">
+        <Header />
+
+        {/* Explicit scroll root */}
+        <main id="page-root">
+          <HeroCarousel />
+
+          <Reveal>
+            <AnniversarySection />
+          </Reveal>
+
+          <Reveal>
+            <AboutSection />
+          </Reveal>
+
+          <Reveal>
+            <ServicesSection />
+          </Reveal>
+
+          <Reveal>
+            <ProjectsSection />
+          </Reveal>
+
+          <Reveal>
+            <FactoriesSection />
+          </Reveal>
+
+          <Reveal>
+            <TeamSection />
+          </Reveal>
+
+          <Reveal>
+            <ContactSection />
+          </Reveal>
+        </main>
+
+        <Footer />
+      </div>
+    </PageReveal>
   );
 };
 
