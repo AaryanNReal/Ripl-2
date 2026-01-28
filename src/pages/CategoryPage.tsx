@@ -17,6 +17,8 @@ import {
   ChevronRight,
   X,
   ArrowLeft,
+  User,
+  Layers,
 } from "lucide-react";
 
 /* ================= TYPES ================= */
@@ -25,11 +27,15 @@ export interface Project {
   id: number;
   title: string;
   images: string[];
-  location: string;
   description: string;
-  area: string;
+
+  client: string;
+  location: string;
+  architect: string;
+  value: string;
   duration: string;
-  year: string;
+  scope: string;
+  area: string;
 }
 
 export interface CategoryPageProps {
@@ -46,10 +52,12 @@ function useInView<T extends HTMLElement>(threshold = 0.25) {
 
   useEffect(() => {
     if (!ref.current) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
       { threshold }
     );
+
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [threshold]);
@@ -62,7 +70,6 @@ function useInView<T extends HTMLElement>(threshold = 0.25) {
 const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
   const navigate = useNavigate();
 
-  /* FORCE PAGE TO TOP */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
@@ -122,7 +129,7 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
         </div>
 
         {/* ================= PROJECTS ================= */}
-        <div className="container mx-auto px-6 lg:px-12 space-y-20">
+        <div className="container mx-auto px-6 lg:px-12 space-y-10">
           {projects.map((project, i) => (
             <AnimatedProject
               key={project.id}
@@ -149,6 +156,7 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
               </button>
 
               <div className="flex flex-col lg:grid lg:grid-cols-2 max-h-[95vh]">
+                {/* Images */}
                 <div className="relative bg-black">
                   <Carousel setApi={setModalApi} opts={{ loop: true }}>
                     <CarouselContent>
@@ -167,19 +175,24 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
                   <ArrowBtnRight onClick={() => modalApi?.scrollNext()} />
                 </div>
 
+                {/* Details */}
                 <div className="p-6 lg:p-10 text-white overflow-y-auto">
                   <h2 className="text-3xl font-bold mb-4">
                     {selected.project.title}
                   </h2>
-                  <p className="text-white/70 mb-6">
+
+                  <p className="text-white/70 mb-8">
                     {selected.project.description}
                   </p>
 
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-5 text-sm">
+                    <Info icon={User} label="Client" value={selected.project.client} />
                     <Info icon={MapPin} label="Location" value={selected.project.location} />
-                    <Info icon={Ruler} label="Area" value={selected.project.area} />
+                    <Info icon={Ruler} label="Architect" value={selected.project.architect} />
+                    <Info icon={Calendar} label="Project Value" value={selected.project.value} />
                     <Info icon={Clock} label="Duration" value={selected.project.duration} />
-                    <Info icon={Calendar} label="Year" value={selected.project.year} />
+                    <Info icon={Layers} label="Scope" value={selected.project.scope} />
+                    <Info icon={Ruler} label="Area" value={selected.project.area} />
                   </div>
                 </div>
               </div>
@@ -250,10 +263,7 @@ const ProjectBlock = ({
                     <h3 className="text-xl font-bold mb-1">
                       {project.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-sm text-white/80">
-                      <MapPin className="w-4 h-4" />
-                      {project.location}
-                    </div>
+                    <p className="text-sm opacity-80">{project.location}</p>
                   </div>
                 </div>
               </CarouselItem>
@@ -269,12 +279,16 @@ const ProjectBlock = ({
         <h3 className="text-3xl font-bold text-charcoal mb-4">
           {project.title}
         </h3>
+
         <p className="text-charcoal/60 mb-6">
           {project.description}
         </p>
-        <div className="flex items-center gap-2 text-sm text-charcoal/70">
-          <MapPin className="w-4 h-4 text-gold" />
-          {project.location}
+
+        <div className="space-y-2 text-sm text-charcoal/70">
+          <p><strong>Client:</strong> {project.client}</p>
+          <p><strong>Architect:</strong> {project.architect}</p>
+          <p><strong>Location:</strong> {project.location}</p>
+          <p><strong>Area:</strong> {project.area}</p>
         </div>
       </div>
     </div>
@@ -310,8 +324,8 @@ const Info = ({
   label: string;
   value: string;
 }) => (
-  <div className="flex items-center gap-3">
-    <Icon className="w-4 h-4 text-gold" />
+  <div className="flex items-start gap-3">
+    <Icon className="w-4 h-4 mt-1 text-gold" />
     <div>
       <p className="text-xs text-white/50">{label}</p>
       <p className="text-white">{value}</p>
