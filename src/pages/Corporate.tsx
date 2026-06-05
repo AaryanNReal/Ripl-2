@@ -357,7 +357,7 @@ const Corporate = () => {
 
   return (
     <CategoryPage
-      title="Corporate"
+      title="Commercial"
       tagline="Inspiring Workspaces"
       projects={projects}
     />

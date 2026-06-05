@@ -100,8 +100,10 @@ const ServicesSection = () => {
           <div className="w-24 h-1.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-8" />
 
           <p className="max-w-2xl mx-auto text-lg text-header-foreground/70">
-            Comprehensive interior solutions powered by innovation,
-            craftsmanship, and decades of expertise
+            Crafting Furniture for Exceptional Hospitality
+Elegant, durable, and custom-built furniture solutions for hotels and luxury spaces.
+
+
           </p>
         </div>
 

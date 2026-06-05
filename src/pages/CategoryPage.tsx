@@ -2,28 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionChampagneGlow from "@/components/bg_glow";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselApi,
-} from "@/components/ui/carousel";
-
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import {
   MapPin,
-  Clock,
-  Ruler,
-  Calendar,
-  ChevronLeft,
   ChevronRight,
-  X,
   ArrowLeft,
-  User,
-  Layers,
 } from "lucide-react";
-
 /* ================= TYPES ================= */
 
 export interface Project {
@@ -80,22 +64,7 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
     (p) => p.images && p.images.length > 0
   );
 
-  const projectsWithoutImages = projects.filter(
-    (p) => !p.images || p.images.length === 0
-  );
 
-  const [selected, setSelected] = useState<{
-    project: Project;
-    imageIndex: number;
-  } | null>(null);
-
-  const [modalApi, setModalApi] = useState<CarouselApi>();
-
-  useEffect(() => {
-    if (modalApi && selected) {
-      modalApi.scrollTo(selected.imageIndex, true);
-    }
-  }, [modalApi, selected]);
 
   const header = useInView<HTMLDivElement>(0.4);
 
@@ -108,12 +77,12 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
         <div
           ref={header.ref}
           className={`
-            container mx-auto px-6 lg:px-12 text-center mb-20
+            container mx-auto px-6 lg:px-12 text-center mb-16
             transition-all duration-700 ease-out
             ${header.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          <div className="flex justify-start mb-6">
+          <div className="flex justify-start mb-4">
             <button
               onClick={() => navigate(-1)}
               className="
@@ -130,7 +99,7 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
             </button>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold text-charcoal mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-charcoal mb-3">
             {title}
           </h1>
 
@@ -140,94 +109,40 @@ const CategoryPage = ({ title, tagline, projects }: CategoryPageProps) => {
         </div>
 
         {/* ================= PROJECTS WITH IMAGES ================= */}
-        <div className="container mx-auto px-6 lg:px-12 space-y-16">
-          {projectsWithImages.map((project, index) => (
-            <AnimatedProject
-              key={project.id}
-              project={project}
-              index={index}
-              onImageClick={(imageIndex) =>
-                setSelected({ project, imageIndex })
-              }
-            />
-          ))}
+       <div className="container mx-auto px-6 lg:px-12">
 
-          {/* ================= TABLE PROJECTS ================= */}
-          <NoImageProjectsTable projects={projectsWithoutImages} />
-        </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {projectsWithImages.map((project, index) => (
+      <AnimatedProject
+        key={project.id}
+        project={project}
+        index={index}
+      />
+    ))}
+  </div>
+
+  {/* ================= TABLE PROJECTS ================= */}
+  <NoImageProjectsTable projects={projects} />
+
+</div>
       </div>
 
       {/* ================= IMAGE MODAL ================= */}
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] bg-charcoal border border-white/10 p-0 overflow-hidden">
-          {selected && (
-            <>
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/70 border border-white/20 flex items-center justify-center"
-              >
-                <X className="w-4 h-4 text-white" />
-              </button>
-
-              <div className="flex flex-col lg:grid lg:grid-cols-2 max-h-[95vh]">
-                {/* Images */}
-                <div className="relative bg-black">
-                  <Carousel setApi={setModalApi} opts={{ loop: true }}>
-                    <CarouselContent>
-                      {selected.project.images.map((img, i) => (
-                        <CarouselItem key={i}>
-                          <img
-                            src={img}
-                            className="w-full h-[50vh] lg:h-[90vh] object-contain"
-                          />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-
-                  <ArrowBtnLeft onClick={() => modalApi?.scrollPrev()} />
-                  <ArrowBtnRight onClick={() => modalApi?.scrollNext()} />
-                </div>
-
-                {/* Details */}
-                <div className="p-6 lg:p-10 text-white overflow-y-auto">
-                  <h2 className="text-3xl font-bold mb-4">
-                    {selected.project.title}
-                  </h2>
-
-                  <p className="text-white/70 mb-8">
-                    {selected.project.description}
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-5 text-sm">
-                    <Info icon={User} label="Client" value={selected.project.client} />
-                    <Info icon={MapPin} label="Location" value={selected.project.location} />
-                    <Info icon={Ruler} label="Architect" value={selected.project.architect} />
-                    <Info icon={Calendar} label="Project Value" value={selected.project.value} />
-                    <Info icon={Clock} label="Duration" value={selected.project.duration} />
-                    <Info icon={Layers} label="Scope" value={selected.project.scope} />
-                    <Info icon={Ruler} label="Area" value={selected.project.area} />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+        
     </section>
   );
 };
 
 /* ================= ANIMATED PROJECT ================= */
 
+/* ================= ANIMATED PROJECT ================= */
+
 const AnimatedProject = ({
   project,
   index,
-  onImageClick,
 }: {
   project: Project;
   index: number;
-  onImageClick: (index: number) => void;
 }) => {
   const { ref, visible } = useInView<HTMLDivElement>(0.25);
 
@@ -240,7 +155,7 @@ const AnimatedProject = ({
       `}
       style={{ transitionDelay: `${index * 120}ms` }}
     >
-      <ProjectBlock project={project} onImageClick={onImageClick} />
+      <ProjectBlock project={project} />
     </div>
   );
 };
@@ -249,63 +164,52 @@ const AnimatedProject = ({
 
 const ProjectBlock = ({
   project,
-  onImageClick,
 }: {
   project: Project;
-  onImageClick: (index: number) => void;
 }) => {
-  const [api, setApi] = useState<CarouselApi>();
+  const navigate = useNavigate();
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
-      <div className="relative">
-        <Carousel setApi={setApi} opts={{ loop: true }}>
-          <CarouselContent>
-            {project.images.map((img, i) => (
-              <CarouselItem key={i}>
-                <div
-                  onClick={() => onImageClick(i)}
-                  className="relative h-[420px] rounded-2xl overflow-hidden cursor-pointer group"
-                >
-                  <img
-                    src={img}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+    <div
+  onClick={() => navigate(`/project/${project.id}`)}
+  className="
+    rounded-2xl
+    overflow-hidden
+    cursor-pointer
+    group
+    bg-[#111111]
+  "
+>
+  {/* IMAGE */}
+  <div className="h-[380px] overflow-hidden">
+    <img
+      src={project.images[0]}
+      alt={project.title}
+      className="
+        w-full
+        h-full
+        object-cover
+        transition-transform
+        duration-700
+        group-hover:scale-110
+      "
+    />
+  </div>
 
-                  <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+  {/* INFO LINE BELOW IMAGE */}
+  <div className="px-4 py-4 flex items-center bg-white justify-between">
+    <h3 className="text-xl font-semibold text-black tracking-wide">
+      {project.title}
+    </h3>
 
-                  <div className="lg:hidden absolute bottom-0 p-5 text-white">
-                    <h3 className="text-xl font-bold mb-1">{project.title}</h3>
-                    <p className="text-sm opacity-80">{project.location}</p>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-
-        <ArrowBtnLeft onClick={() => api?.scrollPrev()} />
-        <ArrowBtnRight onClick={() => api?.scrollNext()} />
-      </div>
-
-      <div className="hidden lg:block">
-        <h3 className="text-3xl font-bold text-charcoal mb-4">
-          {project.title}
-        </h3>
-
-        <p className="text-charcoal/60 mb-6">{project.description}</p>
-
-        <div className="space-y-2 text-sm text-charcoal/70">
-          <p><strong>Client:</strong> {project.client}</p>
-          <p><strong>Architect:</strong> {project.architect}</p>
-          <p><strong>Location:</strong> {project.location}</p>
-          <p><strong>Area:</strong> {project.area}</p>
-        </div>
-      </div>
+    <div className="flex items-center gap-2 text-black text-sm">
+      <MapPin className="w-4 h-4" />
+      <span>{project.location}</span>
     </div>
+  </div>
+</div>
   );
 };
-
 /* ================= TABLE SECTION ================= */
 const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
   const [open, setOpen] = useState(false);
@@ -450,46 +354,5 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
     </div>
   );
 };
-
-
-
-
-/* ================= HELPERS ================= */
-
-const ArrowBtnLeft = ({ onClick }: { onClick: () => void }) => (
-  <button
-    onClick={onClick}
-    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/20 flex items-center justify-center"
-  >
-    <ChevronLeft className="w-5 h-5 text-white" />
-  </button>
-);
-
-const ArrowBtnRight = ({ onClick }: { onClick: () => void }) => (
-  <button
-    onClick={onClick}
-    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/20 flex items-center justify-center"
-  >
-    <ChevronRight className="w-5 h-5 text-white" />
-  </button>
-);
-
-const Info = ({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: any;
-  label: string;
-  value: string;
-}) => (
-  <div className="flex items-start gap-3">
-    <Icon className="w-4 h-4 mt-1 text-gold" />
-    <div>
-      <p className="text-xs text-white/50">{label}</p>
-      <p className="text-white">{value}</p>
-    </div>
-  </div>
-);
 
 export default CategoryPage;

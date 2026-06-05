@@ -21,24 +21,7 @@ import SectionGoldBackgroundLight from "./bg_black";
 /* -------------------- DATA -------------------- */
 
 const factories = [
-  {
-    name: "Wada Manufacturing Unit",
-    location: "Wada, Near Mumbai",
-    shortDescription:
-      "A large-scale, eco-conscious manufacturing facility equipped with modern machinery and skilled craftsmanship.",
-    fullDescription:
-      "Our Wada facility represents the pinnacle of modern manufacturing excellence. Spanning over 50,000 sq.ft., this state-of-the-art unit combines cutting-edge technology with traditional craftsmanship. We've invested in eco-friendly processes and sustainable practices, ensuring that quality and environmental responsibility go hand in hand.",
-    image: "/src/assets/hero-banking.jpg",
-    features: [
-      "CNC Machinery",
-      "Eco-Friendly Process",
-      "Quality Control Lab",
-      "Large Scale Production",
-    ],
-    capacity: "500+ units/month",
-    workforce: "100+ skilled workers",
-    established: "2015",
-  },
+
   {
     name: "Kandivali Workshop",
     location: "Kandivali, Mumbai",
@@ -126,7 +109,7 @@ const FactoriesSection = () => {
           </div>
 
           {/* ---------- FACTORY CARDS ---------- */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+          <div className="grid lg:grid-cols-1 gap-8 lg:gap-12 ">
             {factories.map((factory, index) => {
               const { ref, visible } = useMobilePopIn<HTMLDivElement>();
 

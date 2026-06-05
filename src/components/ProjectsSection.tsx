@@ -27,9 +27,16 @@ interface CategoryData {
 /* ==================== DATA ==================== */
 
 const categories: CategoryData[] = [
+   {
+    id: "hospitality", // route remains /projects/hospitality
+    name: "Hospitality",
+    tagline: "Unforgettable Stays",
+    icon: Hotel,
+    image: hospitalityImg,
+  },
   {
     id: "corporate",
-    name: "Corporate",
+    name: "Commercial",
     tagline: "Inspiring Workspaces",
     icon: Building2,
     image: corporateImg,
@@ -41,13 +48,7 @@ const categories: CategoryData[] = [
     icon: Store,
     image: retailImg,
   },
-  {
-    id: "hospitality", // route remains /projects/hospitality
-    name: "Hotels & Resorts",
-    tagline: "Unforgettable Stays",
-    icon: Hotel,
-    image: hospitalityImg,
-  },
+ 
 ];
 
 /* ==================== SCROLL ANIMATION ==================== */

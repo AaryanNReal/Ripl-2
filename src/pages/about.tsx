@@ -104,7 +104,7 @@ const AboutPage = () => {
           {/* ---------- ABOUT CONTENT ---------- */}
           <div className="max-w-5xl mx-auto space-y-6 text-black/80 text-[16px] leading-relaxed">
             <p>
-              <strong>RAGHBIR INTERIORS PRIVATE LIMITED (RIPL)</strong> is a 45
+              <strong>RAGHBIR INTERIORS PRIVATE LIMITED (RIPL)</strong> is a 50
               years old company rich in experience and committed to quality work
               on time. We are one of the leading Interior Contracting firms with
               headquarters in Mumbai (India) and presence in Bangkok (Thailand).

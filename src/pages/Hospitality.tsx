@@ -18,7 +18,7 @@ const Hospitality = () => {
     {
       id: 2,
       title: "Radisson Blu",
-      images: [],
+      images: ["/Main_Entrance.jpg"],
       description: "Interior works for premium hotel.",
       client: "Radisson Blu",
       location: "Nashik",
@@ -370,7 +370,7 @@ const Hospitality = () => {
 
   return (
     <CategoryPage
-      title="Hotels & Resorts"
+      title="Hospitality"
       tagline="Unforgettable Stays"
       projects={projects}
     />
