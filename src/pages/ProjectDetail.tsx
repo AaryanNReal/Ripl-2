@@ -1,18 +1,47 @@
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin } from "lucide-react";
 
-import { allProjects } from "@/data/projects";
+import { getProjects } from "@/firebase/projectService";
+import { Project } from "@/types/project";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
-
   const { category, slug } = useParams();
 
-const project = allProjects.find(
-  (p) =>
-    p.category === category &&
-    p.slug === slug
-);
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProject = async () => {
+      try {
+        const projects = await getProjects();
+
+        const foundProject =
+          projects.find(
+            (p) =>
+              p.category === category &&
+              p.slug === slug
+          ) || null;
+
+        setProject(foundProject);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProject();
+  }, [category, slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   if (!project) {
     return <Navigate to="/" replace />;
@@ -20,7 +49,6 @@ const project = allProjects.find(
 
   return (
     <section className="min-h-screen bg-[#f7f7f7]">
-      {/* HERO IMAGE */}
       {project.images?.[0] && (
         <div className="relative h-[40vh] md:h-[60vh]">
           <img
@@ -47,7 +75,6 @@ const project = allProjects.find(
       )}
 
       <div className="container mx-auto px-6 lg:px-12 py-12">
-        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
           className="
@@ -75,43 +102,15 @@ const project = allProjects.find(
           </>
         )}
 
-        {/* INFO GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
-
-          <InfoCard
-            title="Client"
-            value={project.client}
-          />
-
-          <InfoCard
-            title="Architect"
-            value={project.architect}
-          />
-
-          <InfoCard
-            title="Area"
-            value={project.area}
-          />
-
-          <InfoCard
-            title="Duration"
-            value={project.duration}
-          />
-
-          <InfoCard
-            title="Value"
-            value={project.value}
-          />
-
-          <InfoCard
-            title="Scope"
-            value={project.scope}
-          />
+          <InfoCard title="Client" value={project.client} />
+          <InfoCard title="Architect" value={project.architect} />
+          <InfoCard title="Area" value={project.area} />
+          <InfoCard title="Duration" value={project.duration} />
+          <InfoCard title="Value" value={project.value} />
+          <InfoCard title="Scope" value={project.scope} />
         </div>
 
-        
-
-        {/* GALLERY */}
         {project.images?.length > 0 && (
           <>
             <h2 className="text-3xl font-semibold mb-8">
@@ -119,7 +118,6 @@ const project = allProjects.find(
             </h2>
 
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-
               {project.images.map((image, index) => (
                 <img
                   key={index}

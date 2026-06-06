@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import SectionGoldBackgroundLight from "./bg_black";
 
-/* -------------------- DATA -------------------- */
+/* ---------------- DATA ---------------- */
 
 const services = [
   {
@@ -41,14 +41,13 @@ const services = [
   },
 ];
 
-/* -------------------- MOBILE SCROLL POP HOOK (REPEATABLE) -------------------- */
+/* ---------------- ANIMATION ---------------- */
 
-function useMobilePopIn<T extends HTMLElement>(threshold = 0.25) {
+function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Desktop: no scroll animation
     if (window.innerWidth >= 1024) {
       setVisible(true);
       return;
@@ -57,107 +56,140 @@ function useMobilePopIn<T extends HTMLElement>(threshold = 0.25) {
     if (!ref.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setVisible(entry.isIntersecting);
-      },
-      { threshold }
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.2 }
     );
 
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [threshold]);
+  }, []);
 
   return { ref, visible };
 }
 
-/* -------------------- SECTION -------------------- */
+/* ---------------- COMPONENT ---------------- */
 
 const ServicesSection = () => {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-charcoal py-20 lg:py-32"
+      className="relative overflow-hidden bg-charcoal py-16 lg:py-24"
     >
-      {/* Background */}
       <SectionGoldBackgroundLight />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        {/* ---------- HEADER ---------- */}
-        <div className="text-center mb-16 lg:mb-20">
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/40 bg-gold/10 backdrop-blur-md mb-8">
+        {/* HEADER */}
+
+        <div className="text-center mb-14 lg:mb-16">
+          <div className="inline-flex items-center gap-2 mb-5">
             <Sparkles className="w-4 h-4 text-gold" />
-            <span className="text-gold uppercase tracking-widest text-xs font-medium">
+            <span className="uppercase tracking-[0.3em] text-xs text-gold">
               What We Offer
             </span>
             <Sparkles className="w-4 h-4 text-gold" />
           </div>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-header-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
             Our Services
           </h2>
 
-          <div className="w-24 h-1.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-8" />
+          <div className="w-24 h-px bg-gold mx-auto my-6" />
 
-          <p className="max-w-2xl mx-auto text-lg text-header-foreground/70">
-            Crafting Furniture for Exceptional Hospitality
-Elegant, durable, and custom-built furniture solutions for hotels and luxury spaces.
-
-
+          <p className="max-w-2xl mx-auto text-white/65 text-base lg:text-lg">
+            Crafting Furniture for Exceptional Hospitality. Elegant, durable,
+            and custom-built furniture solutions for hotels and luxury spaces.
           </p>
         </div>
 
-        {/* ---------- GRID ---------- */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+        {/* SERVICES GRID */}
+
+        <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
           {services.map((service, index) => {
-            const { ref, visible } = useMobilePopIn<HTMLDivElement>();
+            const { ref, visible } = useReveal<HTMLDivElement>();
 
             return (
               <div
                 key={index}
                 ref={ref}
                 className={`
-                  group relative h-full rounded-2xl overflow-hidden
-                  bg-gradient-to-br from-charcoal to-charcoal/80
-                  border border-white/5
-                  p-8 lg:p-10
+                  group
+                  relative
+                  overflow-hidden
 
-                  transition-all duration-700
-                  ease-[cubic-bezier(0.16,1,0.3,1)]
+                  border border-white/10
+                  bg-white/[0.03]
+                  backdrop-blur-sm
+
+                  rounded-2xl
+                  p-6 lg:p-7
+
+                  transition-all duration-500
 
                   ${
                     visible
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 translate-y-8 scale-[0.92]"
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-6"
                   }
 
-                  lg:opacity-100 lg:translate-y-0 lg:scale-100
+                  lg:opacity-100 lg:translate-y-0
+
                   hover:border-gold/30
+                  hover:-translate-y-1
                 `}
               >
-                {/* Large Number */}
-                <span className="pointer-events-none absolute -top-6 -left-4 text-8xl lg:text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-gold/10 to-gold/5">
+                {/* Number */}
+
+                <span className="absolute top-4 right-4 text-5xl font-bold text-white/5">
                   {service.number}
                 </span>
 
-                {/* Content (equal height) */}
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gold/10 border border-gold/20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-                    <service.icon className="w-8 h-8 text-gold" />
-                  </div>
+                {/* Icon */}
 
-                  <h3 className="mb-4 text-2xl lg:text-3xl font-bold text-header-foreground">
-                    {service.title}
-                  </h3>
+                <div
+                  className="
+                    w-12 h-12
+                    rounded-xl
+                    bg-gold/10
+                    border border-gold/20
 
-                  <p className="flex-1 leading-relaxed text-header-foreground/70">
-                    {service.description}
-                  </p>
+                    flex items-center justify-center
+                    mb-5
+
+                    transition-all duration-300
+                    group-hover:scale-110
+                  "
+                >
+                  <service.icon className="w-5 h-5 text-gold" />
                 </div>
 
-                {/* Accent Borders */}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-gold via-yellow-400 to-gold group-hover:w-full transition-all duration-700" />
-                <div className="absolute top-0 right-0 h-0 w-1 bg-gradient-to-b from-gold via-yellow-400 to-gold group-hover:h-full transition-all duration-700 delay-100" />
+                {/* Content */}
+
+                <h3 className="text-xl lg:text-2xl font-semibold text-white mb-3">
+                  {service.title}
+                </h3>
+
+                <p className="text-white/65 leading-relaxed text-sm lg:text-base">
+                  {service.description}
+                </p>
+
+                {/* Gold Accent */}
+
+                <div
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+
+                    h-[2px]
+                    w-0
+
+                    bg-gold
+
+                    transition-all duration-500
+                    group-hover:w-full
+                  "
+                />
               </div>
             );
           })}

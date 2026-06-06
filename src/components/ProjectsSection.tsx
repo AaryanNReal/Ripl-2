@@ -1,55 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import corporateImg from "@/assets/project-commercial.jpg";
-import retailImg from "@/assets/project-retail.jpg";
-import hospitalityImg from "@/assets/hero-hospitality.jpg";
-
 import SectionGoldBackground from "./bg";
 
 import {
   Building2,
-  Store,
-  Hotel,
   ArrowUpRight,
 } from "lucide-react";
 
-/* ==================== TYPES ==================== */
-
-interface CategoryData {
-  id: string;            // route id (DO NOT CHANGE)
-  name: string;          // UI name
-  tagline: string;
-  icon: typeof Building2;
-  image: string;
-}
-
-/* ==================== DATA ==================== */
-
-const categories: CategoryData[] = [
-   {
-    id: "hospitality", // route remains /projects/hospitality
-    name: "Hospitality",
-    tagline: "Unforgettable Stays",
-    icon: Hotel,
-    image: hospitalityImg,
-  },
-  {
-    id: "corporate",
-    name: "Commercial",
-    tagline: "Inspiring Workspaces",
-    icon: Building2,
-    image: corporateImg,
-  },
-  {
-    id: "retail", // route remains /projects/retail
-    name: "Boutiques",
-    tagline: "Captivating Experiences",
-    icon: Store,
-    image: retailImg,
-  },
- 
-];
+import {
+  getCategories,
+  Category,
+} from "@/firebase/projectService";
 
 /* ==================== SCROLL ANIMATION ==================== */
 
@@ -68,6 +30,7 @@ function useInView<T extends HTMLElement>(
     );
 
     observer.observe(ref.current);
+
     return () => observer.disconnect();
   }, [options]);
 
@@ -76,13 +39,18 @@ function useInView<T extends HTMLElement>(
 
 /* ==================== CATEGORY CARD ==================== */
 
-const CategoryCard = ({ category }: { category: CategoryData }) => {
+const CategoryCard = ({
+  category,
+}: {
+  category: Category;
+}) => {
   const navigate = useNavigate();
-  const Icon = category.icon;
 
   return (
     <div
-      onClick={() => navigate(`/${category.id}`)}
+      onClick={() =>
+        navigate(`/category/${category.id}`)
+      }
       className="
         group relative cursor-pointer
         h-[340px]
@@ -96,7 +64,9 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
         src={category.image}
         alt={category.name}
         className="
-          absolute inset-0 w-full h-full object-cover
+          absolute inset-0
+          w-full h-full
+          object-cover
           transition-transform duration-700
           group-hover:scale-110
         "
@@ -112,7 +82,7 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
       <div className="relative h-full p-8 flex flex-col justify-between">
         {/* ICON */}
         <div className="w-14 h-14 rounded-2xl bg-gold/20 backdrop-blur-md border border-gold/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-          <Icon className="w-7 h-7 text-gold" />
+          <Building2 className="w-7 h-7 text-gold" />
         </div>
 
         {/* TEXT */}
@@ -142,7 +112,11 @@ const CategoryCard = ({ category }: { category: CategoryData }) => {
 
 /* ==================== ANIMATED WRAPPER ==================== */
 
-const AnimatedCategory = ({ category }: { category: CategoryData }) => {
+const AnimatedCategory = ({
+  category,
+}: {
+  category: Category;
+}) => {
   const { ref, visible } = useInView<HTMLDivElement>();
 
   return (
@@ -150,7 +124,11 @@ const AnimatedCategory = ({ category }: { category: CategoryData }) => {
       ref={ref}
       className={`
         transition-all duration-700 ease-out
-        ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
+        ${
+          visible
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-6"
+        }
         lg:opacity-100 lg:translate-y-0
       `}
     >
@@ -162,6 +140,24 @@ const AnimatedCategory = ({ category }: { category: CategoryData }) => {
 /* ==================== MAIN SECTION ==================== */
 
 const ProjectsSection = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error(
+          "Error loading categories:",
+          error
+        );
+      }
+    };
+
+    loadCategories();
+  }, []);
+
   return (
     <section
       id="projects"
@@ -180,11 +176,12 @@ const ProjectsSection = () => {
         </h2>
 
         <p className="text-charcoal/60 max-w-2xl mx-auto">
-          Industry-focused interior solutions crafted with precision and elegance
+          Industry-focused interior solutions crafted with
+          precision and elegance
         </p>
       </div>
 
-      {/* GRID (FIXED) */}
+      {/* GRID */}
       <div
         className="
           container mx-auto px-6 lg:px-12
@@ -195,7 +192,10 @@ const ProjectsSection = () => {
         "
       >
         {categories.map((category) => (
-          <AnimatedCategory key={category.id} category={category} />
+          <AnimatedCategory
+            key={category.id}
+            category={category}
+          />
         ))}
       </div>
     </section>

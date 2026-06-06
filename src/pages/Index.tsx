@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
 import AnniversarySection from "@/components/AnniversarySection";
@@ -12,14 +14,27 @@ import TeamSection from "@/components/team";
 import PageReveal from "@/components/PageReveal";
 import Reveal from "@/components/Reveal";
 
+import { getProjects } from "@/firebase/projectService";
+
 const Index = () => {
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const projects = await getProjects();
+        console.log("FIREBASE PROJECTS:", projects);
+      } catch (error) {
+        console.error("FIREBASE ERROR:", error);
+      }
+    };
+
+    loadProjects();
+  }, []);
+
   return (
     <PageReveal>
-      {/* IMPORTANT: no min-h-screen */}
       <div className="bg-neutral-950 text-white overflow-x-hidden">
         <Header />
 
-        {/* Explicit scroll root */}
         <main id="page-root">
           <HeroCarousel />
 

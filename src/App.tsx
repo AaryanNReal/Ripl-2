@@ -1,15 +1,16 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
 import {
-QueryClient,
-QueryClientProvider,
+  QueryClient,
+  QueryClientProvider,
 } from "@tanstack/react-query";
 
 import {
-BrowserRouter,
-Routes,
-Route,
+  BrowserRouter,
+  Routes,
+  Route,
 } from "react-router-dom";
 
 import Index from "./pages/Index";
@@ -19,6 +20,8 @@ import Corporate from "./pages/Corporate";
 import Retail from "./pages/Retail";
 import Hospitality from "./pages/Hospitality";
 
+import DynamicCategory from "./pages/DynamicCategory";
+
 import ProjectDetail from "./pages/ProjectDetail";
 import FactoryDetail from "./pages/FactoryDetail";
 import NotFound from "./pages/NotFound";
@@ -26,62 +29,70 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 function App() {
-return ( <QueryClientProvider client={queryClient}> <TooltipProvider> <Toaster /> <Sonner />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
 
-    <BrowserRouter>
-      <Routes>
-        {/* HOME */}
-        <Route
-          path="/"
-          element={<Index />}
-        />
+        <BrowserRouter>
+          <Routes>
+            {/* HOME */}
+            <Route
+              path="/"
+              element={<Index />}
+            />
 
-        {/* ABOUT */}
-        <Route
-          path="/about"
-          element={<AboutPage />}
-        />
+            {/* ABOUT */}
+            <Route
+              path="/about"
+              element={<AboutPage />}
+            />
 
-        {/* PROJECT CATEGORIES */}
-        <Route
-          path="/corporate"
-          element={<Corporate />}
-        />
+            {/* EXISTING CATEGORY ROUTES */}
+            <Route
+              path="/corporate"
+              element={<Corporate />}
+            />
 
-        <Route
-          path="/retail"
-          element={<Retail />}
-        />
+            <Route
+              path="/retail"
+              element={<Retail />}
+            />
 
-        <Route
-          path="/hospitality"
-          element={<Hospitality />}
-        />
+            <Route
+              path="/hospitality"
+              element={<Hospitality />}
+            />
 
-        {/* PROJECT DETAILS */}
-        <Route
-          path="/projects/:category/:slug"
-          element={<ProjectDetail />}
-        />
+            {/* NEW DYNAMIC CATEGORY ROUTE */}
+            <Route
+              path="/category/:category"
+              element={<DynamicCategory />}
+            />
 
-        {/* FACTORY */}
-        <Route
-          path="/factory-detail"
-          element={<FactoryDetail />}
-        />
+            {/* PROJECT DETAILS */}
+            <Route
+              path="/projects/:category/:slug"
+              element={<ProjectDetail />}
+            />
 
-        {/* 404 */}
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-      </Routes>
-    </BrowserRouter>
-  </TooltipProvider>
-</QueryClientProvider>
+            {/* FACTORY */}
+            <Route
+              path="/factory-detail"
+              element={<FactoryDetail />}
+            />
 
-
-);
+            {/* 404 */}
+            <Route
+              path="*"
+              element={<NotFound />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default App;
