@@ -60,7 +60,7 @@ return ( <QueryClientProvider client={queryClient}> <TooltipProvider> <Toaster /
 
         {/* PROJECT DETAILS */}
         <Route
-          path="/projects/:category/:id"
+          path="/projects/:category/:slug"
           element={<ProjectDetail />}
         />
 

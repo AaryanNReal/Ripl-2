@@ -4,7 +4,7 @@ export const retailProjects: Project[] = [
   {
     id: 1,
     category: "retail",
-
+    slug:"Louis-Vuitton–Hotel-Oberoi",
     title: "Louis Vuitton – Hotel Oberoi",
     images: [],
     description: "Luxury boutique interior works.",

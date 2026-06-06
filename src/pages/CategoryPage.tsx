@@ -161,7 +161,7 @@ const ProjectBlock = ({
     <div
   onClick={() =>
   navigate(
-    `/projects/${project.category}/${project.id}`
+    `/projects/${project.category}/${project.slug}`
   )
 }
   className="
@@ -271,7 +271,7 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
                 key={p.id}
                 onClick={() =>
   navigate(
-    `/projects/${p.category}/${p.id}`
+    `/projects/${p.category}/${p.slug}`
   )
 }
                 className="
@@ -330,7 +330,7 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
                     key={p.id}
                     onClick={() =>
   navigate(
-    `/projects/${p.category}/${p.id}`
+    `/projects/${p.category}/${p.slug}`
   )
 }
                     className="

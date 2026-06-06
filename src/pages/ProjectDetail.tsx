@@ -6,13 +6,13 @@ import { allProjects } from "@/data/projects";
 const ProjectDetail = () => {
   const navigate = useNavigate();
 
-  const { category, id } = useParams();
+  const { category, slug } = useParams();
 
-  const project = allProjects.find(
-    (p) =>
-      p.category === category &&
-      p.id === Number(id)
-  );
+const project = allProjects.find(
+  (p) =>
+    p.category === category &&
+    p.slug === slug
+);
 
   if (!project) {
     return <Navigate to="/" replace />;
@@ -109,16 +109,7 @@ const ProjectDetail = () => {
           />
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="max-w-4xl mb-16">
-          <h2 className="text-3xl font-semibold mb-4">
-            Project Overview
-          </h2>
-
-          <p className="text-black/70 leading-8">
-            {project.description}
-          </p>
-        </div>
+        
 
         {/* GALLERY */}
         {project.images?.length > 0 && (
