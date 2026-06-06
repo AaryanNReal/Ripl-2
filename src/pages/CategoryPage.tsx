@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionChampagneGlow from "@/components/bg_glow";
-
+import { Project } from "@/types/project";
 
 import {
   MapPin,
@@ -10,19 +10,7 @@ import {
 } from "lucide-react";
 /* ================= TYPES ================= */
 
-export interface Project {
-  id: number;
-  title: string;
-  images: string[];
-  description: string;
-  client: string;
-  location: string;
-  architect: string;
-  value: string;
-  duration: string;
-  scope: string;
-  area: string;
-}
+
 
 export interface CategoryPageProps {
   title: string;
@@ -171,7 +159,11 @@ const ProjectBlock = ({
 
   return (
     <div
-  onClick={() => navigate(`/project/${project.id}`)}
+  onClick={() =>
+  navigate(
+    `/projects/${project.category}/${project.id}`
+  )
+}
   className="
     rounded-2xl
     overflow-hidden
@@ -214,11 +206,13 @@ const ProjectBlock = ({
 const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   if (projects.length === 0) return null;
 
   const filteredProjects = projects.filter((p) => {
     const q = query.toLowerCase();
+
     return (
       p.title.toLowerCase().includes(q) ||
       p.client.toLowerCase().includes(q) ||
@@ -241,6 +235,7 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
         "
       >
         <span>All Completed Projects</span>
+
         <ChevronRight
           className={`w-5 h-5 transition-transform ${
             open ? "rotate-90" : ""
@@ -248,14 +243,13 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
         />
       </button>
 
-      {/* CONTENT */}
       {open && (
         <div className="mt-6 rounded-2xl bg-white/80 backdrop-blur-md border border-black/10">
-          {/* SEARCH (non-scrolling) */}
+          {/* SEARCH */}
           <div className="p-4 border-b border-black/10">
             <input
               type="text"
-              placeholder="Search project, client or location…"
+              placeholder="Search project, client or location..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="
@@ -263,33 +257,32 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
                 border border-black/10
                 bg-white
                 text-sm
-                focus:outline-none focus:ring-2 focus:ring-gold/40
+                focus:outline-none
+                focus:ring-2
+                focus:ring-gold/40
               "
             />
           </div>
 
-          {/* ================= MOBILE SCROLL CONTAINER ================= */}
-          <div
-            className="
-              lg:hidden
-              max-h-[65vh]
-              overflow-y-auto
-              overscroll-contain
-              touch-pan-y
-              p-4
-              space-y-4
-            "
-          >
-            {filteredProjects.length === 0 && (
-              <p className="text-center text-charcoal/50 py-6">
-                No matching projects found
-              </p>
-            )}
-
+          {/* MOBILE CARDS */}
+          <div className="lg:hidden max-h-[65vh] overflow-y-auto p-4 space-y-4">
             {filteredProjects.map((p) => (
               <div
                 key={p.id}
-                className="rounded-xl border border-black/10 bg-white p-4"
+                onClick={() =>
+  navigate(
+    `/projects/${p.category}/${p.id}`
+  )
+}
+                className="
+                  rounded-xl
+                  border border-black/10
+                  bg-white
+                  p-4
+                  cursor-pointer
+                  hover:shadow-lg
+                  transition-all
+                "
               >
                 <h4 className="font-semibold text-charcoal mb-2">
                   {p.title}
@@ -307,7 +300,7 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
             ))}
           </div>
 
-          {/* ================= DESKTOP TABLE ================= */}
+          {/* DESKTOP TABLE */}
           <div className="hidden lg:block max-h-[60vh] overflow-y-auto">
             <table className="w-full text-sm">
               <thead className="sticky top-0 bg-white z-10 border-b border-black/10">
@@ -335,9 +328,21 @@ const NoImageProjectsTable = ({ projects }: { projects: Project[] }) => {
                 {filteredProjects.map((p) => (
                   <tr
                     key={p.id}
-                    className="border-t border-black/5 hover:bg-black/5 transition"
+                    onClick={() =>
+  navigate(
+    `/projects/${p.category}/${p.id}`
+  )
+}
+                    className="
+                      border-t border-black/5
+                      hover:bg-black/5
+                      cursor-pointer
+                      transition-all
+                    "
                   >
-                    <td className="px-5 py-4 font-semibold">{p.title}</td>
+                    <td className="px-5 py-4 font-semibold">
+                      {p.title}
+                    </td>
                     <td className="px-5 py-4">{p.client}</td>
                     <td className="px-5 py-4">{p.location}</td>
                     <td className="px-5 py-4">{p.architect}</td>
