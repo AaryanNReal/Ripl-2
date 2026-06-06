@@ -6,6 +6,7 @@ export const hospitalityProjects: Project[] = [
     id: 1,
     category: "hospitality",
     slug : "RadissonBlu",
+    featured: true,
     title: "Radisson Blu",
     images: [
       "https://i.ibb.co/nsG3mD1J/Main-Entrance.jpg",

@@ -2,7 +2,7 @@ export interface Project {
   id: number;
   category: string;
   slug: string;
-  
+  featured : boolean;
   title: string;
   images: string[];
 

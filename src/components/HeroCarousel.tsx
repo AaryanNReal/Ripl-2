@@ -1,127 +1,176 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import heroImage1 from "@/assets/hero-commercial.jpg";
-import heroImage2 from "@/assets/hero-hospitality.jpg";
-import heroImage3 from "@/assets/hero-banking.jpg";
+import { allProjects } from "@/data/projects";
 
-const slides = [
-  { image: heroImage1 },
-  { image: heroImage2 },
-  { image: heroImage3 },
-];
+const slides = allProjects.filter(
+(project) => project.featured
+);
 
 const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const navigate = useNavigate();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+const [currentSlide, setCurrentSlide] = useState(0);
 
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+if (slides.length === 0) return;
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
 
-  const goToPrev = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + slides.length) % slides.length
-    );
-  };
+const interval = setInterval(() => {
+  setCurrentSlide(
+    (prev) => (prev + 1) % slides.length
+  );
+}, 6000);
 
-  const goToNext = () => {
-    setCurrentSlide(
-      (prev) => (prev + 1) % slides.length
-    );
-  };
+return () => clearInterval(interval);
 
-  return (
-    <section
-      id="home"
-      className="relative h-screen w-full overflow-hidden"
-    >
-      {/* Slides */}
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
+
+}, []);
+
+const goToSlide = (index: number) => {
+setCurrentSlide(index);
+};
+
+const goToPrev = () => {
+setCurrentSlide(
+(prev) =>
+(prev - 1 + slides.length) % slides.length
+);
+};
+
+const goToNext = () => {
+setCurrentSlide(
+(prev) => (prev + 1) % slides.length
+);
+};
+
+if (slides.length === 0) return null;
+
+return ( <section
+   id="home"
+   className="relative h-screen w-full overflow-hidden"
+ >
+{slides.map((slide, index) => (
+<div
+key={slide.id}
+onClick={() =>
+navigate(
+`/projects/${slide.category}/${slide.slug}`
+)
+}
+className={`absolute inset-0 cursor-pointer transition-opacity duration-1000 ${
             index === currentSlide
               ? "opacity-100"
               : "opacity-0"
           }`}
-        >
-          <img
-            src={slide.image}
-            alt={`Slide ${index + 1}`}
-            className="w-full h-full object-cover"
-          />
+> <img
+         src={slide.images[0]}
+         alt={slide.title}
+         className="w-full h-full object-cover"
+       />
 
-          {/* Overlay */}
-          <div className="hero-overlay" />
-        </div>
-      ))}
+```
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30" />
 
-      {/* Previous Button */}
-      <button
-        onClick={goToPrev}
-        className="
-          absolute left-4 md:left-8
-          top-1/2 -translate-y-1/2
-          w-12 h-12
-          flex items-center justify-center
-          text-header-foreground/70
-          hover:text-gold
-          transition-colors
-          z-20
-        "
-      >
-        <ChevronLeft className="w-8 h-8" />
-      </button>
-
-      {/* Next Button */}
-      <button
-        onClick={goToNext}
-        className="
-          absolute right-4 md:right-8
-          top-1/2 -translate-y-1/2
-          w-12 h-12
-          flex items-center justify-center
-          text-header-foreground/70
-          hover:text-gold
-          transition-colors
-          z-20
-        "
-      >
-        <ChevronRight className="w-8 h-8" />
-      </button>
-
-      {/* Dots */}
+      {/* Project Title */}
       <div
-        className="
-          absolute bottom-8
-          left-1/2 -translate-x-1/2
-          flex gap-3
-          z-20
-        "
-      >
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
-                ? "w-8 bg-gold"
-                : "w-3 bg-white/40 hover:bg-white/60"
-            }`}
-          />
-        ))}
-      </div>
-    </section>
-  );
+  className="
+    absolute
+    bottom-12
+    right-6
+    md:right-12
+    z-10
+    text-right
+  "
+>
+  <h1
+    className="
+      text-white
+      text-3xl
+      md:text-5xl
+      lg:text-6xl
+      font-bold
+      leading-tight
+      drop-shadow-lg
+      max-w-4xl
+    "
+  >
+    {slide.title}
+  </h1>
+
+  <p
+    className="
+      mt-3
+      text-white/80
+      text-sm
+      md:text-base
+      tracking-wide
+      uppercase
+    "
+  >
+    Explore Project →
+  </p>
+</div>
+    </div>
+  ))}
+
+  {/* Previous */}
+  <button
+    onClick={goToPrev}
+    className="
+      absolute left-4 md:left-8
+      top-1/2 -translate-y-1/2
+      z-20
+      text-white/70
+      hover:text-gold
+      transition-colors
+    "
+  >
+    <ChevronLeft className="w-10 h-10" />
+  </button>
+
+  {/* Next */}
+  <button
+    onClick={goToNext}
+    className="
+      absolute right-4 md:right-8
+      top-1/2 -translate-y-1/2
+      z-20
+      text-white/70
+      hover:text-gold
+      transition-colors
+    "
+  >
+    <ChevronRight className="w-10 h-10" />
+  </button>
+
+  {/* Dots */}
+  <div
+    className="
+      absolute bottom-6
+      left-1/2 -translate-x-1/2
+      flex gap-3
+      z-20
+    "
+  >
+    {slides.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => goToSlide(index)}
+        className={`h-3 rounded-full transition-all duration-300 ${
+          index === currentSlide
+            ? "w-8 bg-gold"
+            : "w-3 bg-white/40 hover:bg-white/60"
+        }`}
+      />
+    ))}
+  </div>
+</section>
+
+
+);
 };
 
 export default HeroCarousel;
-

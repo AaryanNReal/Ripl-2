@@ -5,6 +5,7 @@ export const corporateProjects: Project[] = [
     id: 1,
     category: "corporate",
     slug : "Concentrix-Daksh-Services-India-Pvt-Ltd.",
+    featured : false,
     title: "Concentrix Daksh Services India Pvt. Ltd.",
     images: [],
     description: "Large-scale BPO corporate office interiors.",
