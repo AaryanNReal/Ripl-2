@@ -9,6 +9,7 @@ import {
 import { getProjects } from "@/firebase/projectService";
 import { Project } from "@/types/project";
 
+
 const ProjectDetail = () => {
   const navigate = useNavigate();
   const { category, slug } = useParams();
@@ -18,7 +19,14 @@ const ProjectDetail = () => {
 
   const [selectedImage, setSelectedImage] =
     useState<string | null>(null);
-
+useEffect(() => {
+  if (project) {
+    console.log(
+      "PROJECT IMAGES:",
+      project.images
+    );
+  }
+}, [project]);
   useEffect(() => {
     const loadProject = async () => {
       try {
@@ -89,7 +97,7 @@ const ProjectDetail = () => {
         {project.images?.[0] && (
           <div className="relative h-[40vh] md:h-[60vh]">
             <img
-              src={project.images[0]}
+              src={`${project.images[0]}?hero`}
               alt={project.title}
               className="w-full h-full object-cover"
             />
@@ -156,11 +164,19 @@ const ProjectDetail = () => {
                 Gallery
               </h2>
 
-              <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+              <div
+  className="
+    grid
+    grid-cols-1
+    md:grid-cols-2
+    lg:grid-cols-3
+    gap-6
+  "
+>
                 {project.images.map((image, index) => (
                   <img
-                    key={index}
-                    src={image}
+                    key={`${index}-${image}`}
+                   src={`${image}?v=${index}`}
                     alt={`Project ${index + 1}`}
                     onClick={() =>
                       setSelectedImage(image)
@@ -168,7 +184,7 @@ const ProjectDetail = () => {
                     className="
                       w-full
                       rounded-2xl
-                      break-inside-avoid
+                     
                       cursor-pointer
                       transition
                       duration-300
