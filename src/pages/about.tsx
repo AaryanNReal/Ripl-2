@@ -183,27 +183,7 @@ const AboutPage = () => {
           </div>
 
           {/* ---------- PROJECT LINKS ---------- */}
-          <div className="max-w-5xl mx-auto mt-16">
-            <h2 className="text-2xl font-serif text-foreground mb-6">
-              Explore Our Projects
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[{ label: "Boutiques", to: "/retail" }, { label: "Corporate Projects", to: "/corporate" }, { label: "Hospitality Projects", to: "/hospitality" }].map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="group rounded-xl p-6 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.04),transparent_70%)] bg-white border border-gold/10 hover:shadow-lg transition-all"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-foreground">
-                      {item.label}
-                    </span>
-                    <ArrowUpRight className="w-5 h-5 text-gold group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+          
 
           {/* ---------- TEAM DROPDOWN ---------- */}
           <div className="max-w-5xl mx-auto mt-16">
