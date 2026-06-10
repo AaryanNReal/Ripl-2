@@ -9,10 +9,14 @@ const team = [
   {
     category: "Directors",
     members: [
-      { name: "Mr. Balvinder Singh", designation: "Managing Director", exp: "27 Yrs." },
-      { name: "Mr. Narendra Singh", designation: "Director", exp: "24 Yrs." },
+      { name: "Mr. Balvinder Singh", designation: "Managing Director", exp: "30 Years" },
+      { name: "Mr. Narendra Singh", designation: "Joint Mamaging Director", exp: "27 Years" },
       { name: "Mr. Rakesh More", designation: "Director – Project (India)", exp: "27 Yrs." },
-      { name: "Mr. Tushar Urumkar", designation: "Director – Project (Thailand)", exp: "33 Yrs." },
+      { name: "Mr. Tushar Urumkar", designation: "Director – Project (Thailand)", exp: "35   Yrs." },
+      { name: "Mrs. Shruti Palav", designation: "Sr. Project Coordinator", exp: "12 Yrs." },
+      { name: "Ms. Riya Sawant", designation: "Project Coordinator", exp: "4 Yrs." },
+      { name: "Mrs. Shruti Palav", designation: "Sr. Project Coordinator", exp: "12 Yrs." },
+      { name: "Ms. Riya Sawant", designation: "Project Coordinator", exp: "4 Yrs." },
     ],
   },
   {
@@ -105,17 +109,17 @@ const AboutPage = () => {
           <div className="max-w-5xl mx-auto space-y-6 text-black/80 text-[16px] leading-relaxed">
             <p>
               <strong>RAGHBIR INTERIORS PRIVATE LIMITED (RIPL)</strong> is a 50
-              years old company rich in experience and committed to quality work
+              years old turnkey Interior Contracting company rich in experience and committed to quality work
               on time. We are one of the leading Interior Contracting firms with
               headquarters in Mumbai (India) and presence in Bangkok (Thailand).
             </p>
 
             <p>
               The driving force behind RIPL has been the Founder Chairman
-              <strong> Mr. Raghbir Singh</strong>, a great inspiration with his
+              <strong> Late Mr. Raghbir Singh</strong>, a great inspiration with his
               magnitude of experience and incredible energy.
               <strong> Mr. Balvinder Singh (Managing Director)</strong> and
-              <strong> Mr. Narendra Singh (Director)</strong> have successfully
+              <strong> Mr. Narendra Singh ( Joint Managing Director)</strong> have successfully
               established and proved themselves by executing prestigious
               projects. Our Thailand operations are headed by
               <strong> Mr. Tushar Urumkar (Director – Projects)</strong>.
@@ -185,48 +189,7 @@ const AboutPage = () => {
           {/* ---------- PROJECT LINKS ---------- */}
           
 
-          {/* ---------- TEAM DROPDOWN ---------- */}
-          <div className="max-w-5xl mx-auto mt-16">
-            <button
-              onClick={() => setOpen(!open)}
-              className="w-full flex items-center justify-between px-6 py-4 rounded-xl bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.04),transparent_70%)] bg-white border border-gold/10 text-left"
-            >
-              <span className="font-medium text-foreground">Know Our Team</span>
-              <ChevronDown
-                className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {open && (
-              <div className="mt-8 space-y-10">
-                {team.slice(1).map((section, i) => (
-                  <div key={section.category}>
-                    <h3 className="text-lg font-serif text-foreground mb-4">
-                      {i + 1}. {section.category}
-                    </h3>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {section.members.map((m, idx) => (
-                        <div
-                          key={idx}
-                          className="rounded-xl p-5 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.04),transparent_70%)] bg-white border border-gold/10 shadow-sm"
-                        >
-                          <div className="text-sm font-medium text-foreground">
-                            {m.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground mt-1">
-                            {m.designation}
-                          </div>
-                          <div className="mt-2 text-[11px] uppercase tracking-wider text-gold">
-                            Experience: {m.exp}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        
         </div>
       </div>
     </section>
