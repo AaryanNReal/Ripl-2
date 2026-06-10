@@ -11,47 +11,15 @@ const team = [
     members: [
       { name: "Mr. Balvinder Singh", designation: "Managing Director", exp: "30 Years" },
       { name: "Mr. Narendra Singh", designation: "Joint Mamaging Director", exp: "27 Years" },
-      { name: "Mr. Rakesh More", designation: "Director – Project (India)", exp: "27 Yrs." },
-      { name: "Mr. Tushar Urumkar", designation: "Director – Project (Thailand)", exp: "35   Yrs." },
-      { name: "Mrs. Shruti Palav", designation: "Sr. Project Coordinator", exp: "12 Yrs." },
-      { name: "Ms. Riya Sawant", designation: "Project Coordinator", exp: "4 Yrs." },
-      { name: "Mrs. Shruti Palav", designation: "Sr. Project Coordinator", exp: "12 Yrs." },
-      { name: "Ms. Riya Sawant", designation: "Project Coordinator", exp: "4 Yrs." },
+      { name: "Mr. Rakesh More", designation: "Director – Project (India)", exp: "27 Years" },
+      { name: "Mr. Tushar Urumkar", designation: "Director – Project (Thailand)", exp: "35 years" },
+      { name: "Mr. Kishanlal Suthar", designation: "Head of Poduction", exp: "45 years" },
+      { name: "Mr. Vikas Jadhav", designation: "Team Leader-Projects", exp: "20 Years" },
+      { name: "Mr. Santosh Dhamapurkar", designation: "Team Leader-Projects", exp: "19 Years" },
+      { name: "Mr. Amit Shelar", designation: "Team Leader-Projects", exp: "18 Years" },
     ],
   },
-  {
-    category: "Administration",
-    members: [
-      { name: "Mrs. Shruti Palav", designation: "Sr. Project Coordinator", exp: "12 Yrs." },
-      { name: "Ms. Riya Sawant", designation: "Project Coordinator", exp: "4 Yrs." },
-    ],
-  },
-  {
-    category: "Accounts",
-    members: [
-      { name: "Mrs. Sharda Jadhav", designation: "Sr. Manager", exp: "28 Yrs." },
-      { name: "Ms. Namrata Palav", designation: "Sr. Manager", exp: "10 Yrs." },
-      { name: "Mr. Vikas Padave", designation: "Assistant", exp: "14 Yrs." },
-      { name: "Ms. Harshada Chachad", designation: "Assistant", exp: "4 Yrs." },
-    ],
-  },
-  {
-    category: "Procurement",
-    members: [
-      { name: "Mrs. Reshma D’Souza", designation: "Sr. Manager", exp: "18 Yrs." },
-      { name: "Mrs. Geeta Likhite", designation: "Sr. Manager", exp: "15 Yrs." },
-    ],
-  },
-  {
-    category: "Project Heads",
-    members: [
-      { name: "Mr. Dharma Narvekar", designation: "Factory Manager", exp: "30 Yrs." },
-      { name: "Mr. Santosh Dhamapurkar", designation: "Sr. Manager – Projects", exp: "15 Yrs." },
-      { name: "Mr. Vikas Jadhav", designation: "Sr. Manager – Projects", exp: "18 Yrs." },
-      { name: "Mr. Amit Shelar", designation: "Sr. Manager – Projects", exp: "15 Yrs." },
-      { name: "Mr. Vishal Jadhav", designation: "Sr. Manager – Projects", exp: "12 Yrs." },
-    ],
-  },
+ 
 ];
 
 /* -------------------- PAGE -------------------- */
@@ -163,7 +131,7 @@ const AboutPage = () => {
 
           {/* ---------- LEADERSHIP ---------- */}
           <div className="max-w-5xl mx-auto mt-14">
-            <h2 className="text-2xl font-serif text-foreground mb-6 text-center">
+            <h2 className="text-3xl  font-serif text-foreground mb-6 text-center">
               Leadership
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
