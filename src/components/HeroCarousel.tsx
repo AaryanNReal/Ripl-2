@@ -100,11 +100,19 @@ const HeroCarousel = () => {
             }
           `}
         >
-          <img
-            src={slide.images?.[0]}
-            alt={slide.title}
-            className="w-full h-full object-cover"
-          />
+       <div className="absolute inset-0 overflow-hidden">
+  <img
+    src={slide.images?.[0]}
+    alt={slide.title}
+    className="
+      w-full
+      h-full
+      object-cover
+      object-center
+      scale-105
+    "
+  />
+</div>
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/30" />
