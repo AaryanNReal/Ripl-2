@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import SectionChampagneEdgeGlowStrong from "./bg_glow";
-// ✅ CORRECT asset import
 import logo from "@/assets/ri.png";
 
 const navItems = [
@@ -32,50 +30,77 @@ const Header = () => {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [lastScrollY]);
 
   return (
     <header
-  className={`
-    fixed top-0 left-0 right-0 z-50
-    bg-gradient-to-b from-charcoal/95 via-charcoal/90 to-charcoal/85
-    backdrop-blur-md
-    border-b border-white/5
-    transition-transform duration-300 ease-in-out
-    ${isVisible ? "translate-y-0" : "-translate-y-full"}
-  `}
->
-
-      
+      className={`
+        fixed top-0 left-0 right-0 z-50
+        bg-gradient-to-b
+        from-charcoal/95
+        via-charcoal/90
+        to-charcoal/85
+        backdrop-blur-md
+        border-b border-white/5
+        transition-transform duration-300 ease-in-out
+        ${isVisible ? "translate-y-0" : "-translate-y-full"}
+      `}
+    >
       <div className="container mx-auto px-5 sm:px-6 lg:px-12">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-[96px]">
 
-          {/* LOGO + TITLE */}
-          <a href="#home" className="flex items-center gap-2 whitespace-nowrap">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center overflow-hidden">
-              <img
-                src={logo}
-                alt="Raghbir Interiors Logo"
-                className="w-full h-full object-contain"
-              />
+          {/* Logo + Brand */}
+          <a
+            href="#home"
+            className="flex items-center gap-4 whitespace-nowrap"
+          >
+            <img
+              src={logo}
+              alt="Raghbir Interiors Logo"
+              className="
+                w-[60px]
+                h-[60px]
+                sm:w-[80px]
+                sm:h-[80px]
+                object-contain
+                shrink-0
+              "
+            />
+
+            <div className="flex items-center h-[80px]">
+              <h1
+                className="
+                  font-serif
+                  font-medium
+                  leading-none
+                  tracking-[0.05em]
+                  flex
+                  items-center
+                "
+              >
+                <span className="text-gold text-[18px] sm:text-[22px]">
+                  RAGHBIR
+                </span>
+
+                <span className="text-header-foreground text-[18px] sm:text-[22px] ml-2">
+                  INTERIORS
+                </span>
+
+                <span className="hidden sm:inline text-header-foreground text-[18px] sm:text-[22px] ml-2">
+                  PVT. LTD.
+                </span>
+              </h1>
             </div>
-
-            <span className="font-serif tracking-wide flex items-center">
-              <span className="text-gold text-sm sm:text-xl mr-1">
-                RAGHBIR
-              </span>
-              <span className="text-header-foreground text-xs sm:text-xl">
-                INTERIORS
-              </span>
-              <span className="hidden sm:inline text-header-foreground text-xs sm:text-xl ml-1">
-                PVT. LTD
-              </span>
-            </span>
           </a>
 
-          {/* DESKTOP NAV */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <a
@@ -88,20 +113,24 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMenuOpen((v) => !v)}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
             className="lg:hidden text-header-foreground hover:text-gold transition-colors"
             aria-label="Toggle Menu"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-charcoal-light border-t border-header-foreground/10 animate-fade-in">
+        <div className="lg:hidden bg-charcoal-light border-t border-white/10 animate-fade-in">
           <nav className="container mx-auto px-6 py-6 flex flex-col gap-4">
             {navItems.map((item) => (
               <a
