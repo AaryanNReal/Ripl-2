@@ -14,30 +14,24 @@ const services = [
   {
     number: "01",
     icon: Building2,
-    title: "General Contract Execution",
+    title: "Turnkey Contractors",
     description:
-      "Expertise in Civil, Interiors and Fitout Works with turnkey interior solutions including joinery and finishes for hotels, hospitals, commercial, retail & mixed-use developments.",
+      "We expertise in Civil, Interiors and Fitout Works with turnkey interior solutions including joinery and finishes for hotels, hospitals, commercial, retail & mixed-use developments.",
   },
   {
     number: "02",
     icon: Paintbrush,
     title: "Interior Fit Outs",
     description:
-      "Perfected the art of skilled craftsmanship with in-house manufacturing capabilities across 16+ states.",
+      "Perfected the art of skilled craftsmanship with in-house manufacturing capabilities.",
   },
+  
   {
     number: "03",
-    icon: HardHat,
-    title: "Civil Interior Execution",
-    description:
-      "Civil interior execution contractors for residential and commercial spaces with precision and excellence.",
-  },
-  {
-    number: "04",
     icon: Factory,
-    title: "State-of-the-art Manufacturing",
+    title: "In House State-of-the-art Manufacturing",
     description:
-      "Advanced manufacturing using German technology and premium materials for exceptional furniture.",
+      "Advanced manufacturing using latest technology and premium materials for exceptional furniture.",
   },
 ];
 
@@ -104,7 +98,7 @@ const ServicesSection = () => {
 
         {/* SERVICES GRID */}
 
-        <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-3">
           {services.map((service, index) => {
             const { ref, visible } = useReveal<HTMLDivElement>();
 

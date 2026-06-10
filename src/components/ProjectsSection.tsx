@@ -114,9 +114,9 @@ const CategoryCard = memo(
               {category.name}
             </h3>
 
-            <p className="text-sm uppercase tracking-[0.25em] text-gold mb-6">
-              {category.tagline}
-            </p>
+            <p className="text-xs uppercase tracking-[0.15em] text-gold mb-4">
+    {category.tagline}
+  </p>
 
             <div className="flex items-center justify-between">
               <span className="text-white/70 text-sm">

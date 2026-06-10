@@ -40,13 +40,21 @@ const AnniversarySection = () => {
 
           <p className="text-lg sm:text-xl md:text-2xl text-header-foreground/80 font-light mb-6 sm:mb-8 px-2">
             Celebrating{" "}
-            <span className="text-black font-medium">Five Decades</span> &{" "}
-            <span className="text-black font-medium">Three Generations</span> of Crafting Dreams Into Reality
+             <span className=" text-5xl ml-1 mr-1 font-serif font-bold text-white bg-clip-text bg-gradient-to-b from-gold via-gold-light to-gold leading-none">
+              5
+            </span>
+            <span className="text-black font-medium"> Decades</span> &{" "}
+             <span className=" text-5xl ml-1 mr-2 font-serif font-bold text-white bg-clip-text bg-gradient-to-b from-gold via-gold-light to-gold leading-none">
+              3
+            </span>
+            <span className="text-black font-medium">Generations</span> of Crafting Dreams Into Reality
           </p>
 
+          <span className="text-header-foreground/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed ">
+            From our humble beginnings to becoming India's trusted name in Interior excellence 
+          </span>
           <p className="text-header-foreground/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-6 px-2">
-            From our humble beginnings to becoming India's trusted name in interior excellence —
-            thank you for being part of our incredible journey!
+            Thank you for being part of our incredible journey!
           </p>
 
           {/* Stats */}

@@ -21,7 +21,7 @@ const stats = [
   },
   {
     icon: Building,
-    count: 500,
+    count: 550,
     suffix: "+",
     label: "Projects Delivered",
   },
@@ -31,12 +31,7 @@ const stats = [
     suffix: "+",
     label: "Professionals",
   },
-  {
-    icon: Award,
-    count: 16,
-    suffix: "+",
-    label: "Regions",
-  },
+  
 ];
 
 /* -------------------- STAT CARD -------------------- */
@@ -171,16 +166,14 @@ const AboutSection = () => {
 
         <div className="max-w-3xl mx-auto text-center space-y-4 text-black/75 text-[15px]">
           <p>
-            <strong>Raghbir Interiors Pvt. Ltd.</strong> is a
-            50+ year interior contracting company delivering
+            <strong>RAGHBIR INTERIORS PVT LTD</strong> is a
+            50+ year Turnkey interior contracting company delivering
             high-quality projects across India and international
             markets.
           </p>
 
           <p>
-            With expertise in corporate offices, luxury hotels,
-            retail and residential developments, RIPL is driven
-            by precision, planning and timely execution.
+            With expertise in luxury hotels and resorts, corporate offices, high-end luxury retail brands.
           </p>
         </div>
 
@@ -205,7 +198,7 @@ const AboutSection = () => {
 
         {/* Stats */}
 
-        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {stats.map((stat, index) => (
             <StatCard
               key={index}
