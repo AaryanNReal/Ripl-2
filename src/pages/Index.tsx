@@ -58,10 +58,7 @@ const Index = () => {
             <FactoriesSection />
           </Reveal>
 
-          <Reveal>
-            <TeamSection />
-          </Reveal>
-
+          
           <Reveal>
             <ContactSection />
           </Reveal>
